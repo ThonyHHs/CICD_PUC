@@ -1,5 +1,7 @@
-package dev.thony.flight_api;
+package dev.thony.flight_api.model;
 
+import dev.thony.flight_api.model.Enums.AirplaneTypeEnum;
+import dev.thony.flight_api.model.Enums.ContinentEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

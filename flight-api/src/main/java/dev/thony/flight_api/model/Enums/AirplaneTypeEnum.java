@@ -1,4 +1,4 @@
-package dev.thony.flight_api;
+package dev.thony.flight_api.model.Enums;
 
 public enum AirplaneTypeEnum {
     Light,
