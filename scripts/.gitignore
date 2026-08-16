@@ -1,0 +1,4 @@
+.venv
+
+rawData/*.json
+rawData/*.csv
