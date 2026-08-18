@@ -4,7 +4,7 @@ on:
     branches: main
 
 jobs:
-  compile:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,5 +15,7 @@ jobs:
           java-version: "25"
           distribution: "temurin"
           cache: maven
-      - name: Compile with Maven
-        run: mvn compile
+          cache-dependency-path: flight-api/pom.xml
+      - name: Build with Maven
+        working-directory: flight-api
+        run: mvn -B compile
