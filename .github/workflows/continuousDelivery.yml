@@ -1,0 +1,33 @@
+name: Continuous Delivery
+on:
+  push:
+    branches: main
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          java-version: "25"
+          distribution: "temurin"
+          cache: maven
+          cache-dependency-path: flight-api/pom.xml
+
+      - name: Build jar
+        working-directory: flight-api
+        run: mvn -B package -DskipTests
+
+      - name: Find built jar
+        working-directory: flight-api
+        run: echo "JAR_PATH=$(find target -maxdepth 1 -name '*.jar' ! -name '*sources*' ! -name '*javadoc*')" >> $GITHUB_ENV
+
+      - name: Uploading built jar
+        uses: actions/upload-artifact@v7
+        with:
+          name: flight-api-jar
+          path: flight-api/${{ env.JAR_PATH }}
