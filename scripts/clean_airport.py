@@ -22,17 +22,27 @@ def cleanData(input_file):
         encoding="utf8",
         dtype=dtypes,
         usecols=[
-            "type", "name", "latitude_deg", "longitude_deg", "continent",
-            "iso_country", "municipality", "scheduled_service",
-            "icao_code", "gps_code", "wikipedia_link",
+            "type",
+            "name",
+            "latitude_deg",
+            "longitude_deg",
+            "continent",
+            "iso_country",
+            "municipality",
+            "scheduled_service",
+            "icao_code",
+            "gps_code",
+            "wikipedia_link",
         ],
     )
 
-    df = df.rename(columns={
-        "iso_country": "country",
-        "latitude_deg": "latitude",
-        "longitude_deg": "longitude",
-    })
+    df = df.rename(
+        columns={
+            "iso_country": "country",
+            "latitude_deg": "latitude",
+            "longitude_deg": "longitude",
+        }
+    )
 
     df["code"] = df["icao_code"].fillna(df["gps_code"]).str.upper()
     df["latitude"] = pd.to_numeric(df["latitude"], errors="coerce")
@@ -46,22 +56,34 @@ def cleanData(input_file):
 
     df = df.drop_duplicates(subset="code", keep="first")
 
-    filtered_df = df[
+    mask = (
         df["type"].isin(["Small", "Medium", "Large"])
         & df["scheduled_service"]
         & df["continent"].isin(["AF", "AN", "AS", "EU", "NA", "OC", "SA"])
-        & df["code"].notna()
         & df["latitude"].between(-90, 90)
         & df["longitude"].between(-180, 180)
-    ].copy()
+    )
+
+    filtered_df = df[mask].dropna(subset=["code", "name", "country"]).copy()
 
     filtered_df = filtered_df[
-        ["code", "name", "continent", "country", "municipality",
-         "wikipedia_link", "latitude", "longitude", "type"]
+        [
+            "code",
+            "name",
+            "continent",
+            "country",
+            "municipality",
+            "wikipedia_link",
+            "latitude",
+            "longitude",
+            "type",
+        ]
     ]
 
-    print(f"{len(df)} rows read -> {len(filtered_df)} valid rows after filtering "
-          f"({len(df) - len(filtered_df)} dropped)")
+    print(
+        f"{len(df)} rows read -> {len(filtered_df)} valid rows after filtering "
+        f"({len(df) - len(filtered_df)} dropped)"
+    )
     return filtered_df
 
 
@@ -73,7 +95,7 @@ def sql_literal(value):
         return "TRUE" if value else "FALSE"
     if isinstance(value, (int, float)):
         return str(value)
-    
+
     escaped = str(value).replace("'", "''")
     return f"'{escaped}'"
 
@@ -90,6 +112,7 @@ def transformToSQL(df: DataFrame, output_file):
         f.write(f"INSERT INTO airport ({columns_sql}) VALUES\n")
         f.write(",\n".join(row_strings))
         f.write(";\n")
+
 
 # put the raw data inside /scripts/rawData/
 data = cleanData("airports.csv")

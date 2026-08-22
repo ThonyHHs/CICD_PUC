@@ -49,12 +49,14 @@ def filterAirplanes(inputPath) -> list:
         data = json.load(f)
 
     airplane_list = []
+    seen_codes = {}
 
     for _, value in data.items():
         airframe_options = value["airframes"][0]["airframe_options"]
         maxFuelLbs = airframe_options["maxfuel"]
         fuelFlowLbs = value["aircraft_fuelflow_lbs"]
         speed = getSpeed(value["aircraft_speed"], value["aircraft_ceiling"])
+        
         airplane = {
             "code": value["aircraft_icao"],
             "name": value["aircraft_name"],
@@ -70,7 +72,11 @@ def filterAirplanes(inputPath) -> list:
             or len(airplane["code"]) > 5
         ):
             continue
+        if airplane["code"] in seen_codes:
+            print(f"duplicate code '{airplane['code']}'")
+            continue
 
+        seen_codes[airplane["code"]] = airplane["code"]
         airplane_list.append(airplane)
 
     print(f"{len(airplane_list)} airplanes generated")
