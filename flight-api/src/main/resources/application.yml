@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: flight-api
+  profiles:
+    default: dev
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8080
