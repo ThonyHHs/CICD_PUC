@@ -1,0 +1,18 @@
+# build jar
+FROM maven:3.9-eclipse-temurin-25-noble AS build
+
+WORKDIR /app
+
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+COPY src ./src
+RUN mvn -B package -DskipTests
+
+# run jar
+FROM eclipse-temurin:25-jre-alpine
+
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
