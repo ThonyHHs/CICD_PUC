@@ -55,5 +55,5 @@ jobs:
           context: ./flight-api/
           push: true
           tags: |
-            thony/flight-api:latest
-            thony/flight-api:${{ github.sha }}
+            thonyhhs/flight-api:latest
+            thonyhhs/flight-api:${{ github.sha }}
