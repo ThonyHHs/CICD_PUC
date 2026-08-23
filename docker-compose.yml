@@ -2,10 +2,10 @@ services:
   flight-api:
     build: ./flight-api
     environment:
-      SPRING_PROFILES_ACTIVE: docker
-      DB_URL: jdbc:postgresql://postgres:5432/airdb
-      DB_USER: postgres
-      DB_PASSWORD: postgres
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/airdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
     ports:
      - "8080:8080"
     depends_on:
