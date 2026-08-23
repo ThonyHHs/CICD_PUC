@@ -1,8 +1,8 @@
 # Formativa_CICD
 
-Uma API REST feita usando Spring Boot para geração de rotas aleatorias para uso em simuladores, usando bases de dados reais de [OurAirports](https://davidmegginson.github.io/ourairports-data/airports.csv) e [SimBrief](https://www.simbrief.com/api/inputs.airframes.json)
+Uma API REST feita usando Spring Boot para geração de rotas aleatórias para uso em simuladores, usando bases de dados reais de [OurAirports](https://davidmegginson.github.io/ourairports-data/airports.csv) e [SimBrief](https://www.simbrief.com/api/inputs.airframes.json).
 
-## Técnologias usadas
+## Tecnologias usadas
 
 - Java 25 + Spring Boot
 - PostgreSQL 16
@@ -11,10 +11,10 @@ Uma API REST feita usando Spring Boot para geração de rotas aleatorias para us
 
 ## Getting Started
 
-### Pré requisitos
+### Pré-requisitos
 
 - Docker e Docker Compose
-- Opcional - Java 25 e Maven (Para execução local sem docker)
+- Opcional - Java 25 e Maven (Para execução local sem Docker)
 
 ### Docker Compose
 
@@ -24,9 +24,9 @@ cd CICD_PUC
 docker compose up --build
 ```
 
-Será iniciado dois containers:
+Serão iniciados dois contêineres:
 
-- Postgresql, que será populado automaticamente com os scripts em `db/`
+- PostgreSQL, que será populado automaticamente com os scripts em `db/`
 - API, que estará disponível em `http://localhost:8080`
 
 ### Localmente com a imagem do Docker
@@ -36,7 +36,7 @@ docker pull thonyhhs/flight-api:latest
 docker run --env-file .env -p 8080:8080 thonyhhs/flight-api:latest
 ```
 
-Use o arquivo `.env.example` para a configuração da conexão com um banco de dados PostgreSQL
+Use o arquivo `.env.example` para a configuração da conexão com um banco de dados PostgreSQL.
 
 ### Localmente sem Docker
 
@@ -51,7 +51,6 @@ Altere o arquivo `./src/main/resources/application-dev.yml` para a conexão com 
 ## API Endpoints
 
 ### GET - `/api/resource/airplanes`
-
 Lista todos os aviões
 
 ```json
@@ -64,20 +63,21 @@ Lista todos os aviões
 ```
 
 ### GET - `/api/resource/continents`
-
 Lista todos os continentes
 
 ```json
 [
-  {
-    "code": "A20N",
-    "name": "A320-200N"
-  }
+  "AF",
+  "AN",
+  "AS",
+  "EU",
+  "NA",
+  "OC",
+  "SA"
 ]
 ```
 
 ### GET - `/api/route?airplaneCode={code}&continent={continent}`
-
 Lista todos os aviões
 
 ```json
@@ -116,11 +116,11 @@ cd scripts
 mkdir rawData
 ```
 
-Faça download dos seguintes arquivos e copie-os para a pasta rawData:
+Faça o download dos seguintes arquivos e copie-os para a pasta `rawData/`:
 - `airports.csv` - [OurAirports](https://davidmegginson.github.io/ourairports-data/airports.csv)
 - `inputs.airframes.json` - [SimBrief](https://www.simbrief.com/api/inputs.airframes.json)
 
-Após isso execute os scripts.
+Após isso, execute os scripts:
 ```bash 
 pip install  -r requirements.txt
 python clean_airports.py
@@ -128,7 +128,7 @@ python clean_airplanes.py
 ```
 Os arquivos serão gerados dentro da pasta `scripts/`.
 
-Após os arquivos serem gerados, copie-os para a pata `db/` na raíz do projeto.
+Após os arquivos serem gerados, copie-os para a pasta `db/` na raíz do projeto.
 
 
 ## License 
