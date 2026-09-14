@@ -11,8 +11,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Send message to discord
-        uses: ./ # Uses an action in the root directory
+      - name: Discord Commits
+        uses: Sniddl/discord-commits@v1.8
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           template: 'avatar-with-link'
