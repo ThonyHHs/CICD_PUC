@@ -19,7 +19,7 @@ jobs:
       
       - name: Build with Maven
         working-directory: flight-api
-        run: mvn -B compile
+        run: mvn -B verify
   
   docker-build:
     runs-on: ubuntu-latest
