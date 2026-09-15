@@ -39,7 +39,8 @@ public class RouteService {
         String simbriefLink = String.format("https://dispatch.simbrief.com/options/custom?type=%s&orig=%s&dest=%s",
                 airplane.getCode(), departure.getCode(), arrival.getCode());
 
-        return new RouteDTO(AirportDTO.from(departure), AirportDTO.from(arrival), AirplaneDTO.from(airplane), flightTime, distance, simbriefLink);
+        return new RouteDTO(AirportDTO.from(departure), AirportDTO.from(arrival), AirplaneDTO.from(airplane),
+                flightTime, distance, simbriefLink);
     }
 
     public int calculateDistanceNm(AirportModel departure, AirportModel arrival) {
@@ -71,7 +72,7 @@ public class RouteService {
         List<AirportModel> departureList = airportRepository.findByContinent(continent).stream()
                 .filter(airport -> airport.getType().ordinal() >= airplane.getType().ordinal())
                 .collect(Collectors.toList());
-        System.out.println(continent);
+
         if (departureList.isEmpty()) {
             throw new RuntimeException("No Airport found on continent {" + continent + "}!");
         }
