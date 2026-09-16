@@ -39,10 +39,11 @@ public class RouteService {
         String simbriefLink = String.format("https://dispatch.simbrief.com/options/custom?type=%s&orig=%s&dest=%s",
                 airplane.getCode(), departure.getCode(), arrival.getCode());
 
-        return new RouteDTO(AirportDTO.from(departure), AirportDTO.from(arrival), AirplaneDTO.from(airplane), flightTime, distance, simbriefLink);
+        return new RouteDTO(AirportDTO.from(departure), AirportDTO.from(arrival), AirplaneDTO.from(airplane),
+                flightTime, distance, simbriefLink);
     }
 
-    private int calculateDistanceNm(AirportModel departure, AirportModel arrival) {
+    public int calculateDistanceNm(AirportModel departure, AirportModel arrival) {
         final int EARTH_RADIUS_KM = 6371;
 
         double lat1 = Math.toRadians(departure.getLatitude());
@@ -62,12 +63,12 @@ public class RouteService {
         return (int) Math.round(distance / 1.852);
     }
 
-    private Duration calculateFlightTime(int distanceNm, int airplaneSpeedKts) {
+    public Duration calculateFlightTime(int distanceNm, int airplaneSpeedKts) {
         double hours = (double) distanceNm / airplaneSpeedKts;
         return Duration.ofMinutes(Math.round(hours * 60));
     }
 
-    private AirportModel getDepartureAirport(AirplaneModel airplane, ContinentEnum continent) {
+    public AirportModel getDepartureAirport(AirplaneModel airplane, ContinentEnum continent) {
         List<AirportModel> departureList = airportRepository.findByContinent(continent).stream()
                 .filter(airport -> airport.getType().ordinal() >= airplane.getType().ordinal())
                 .collect(Collectors.toList());
@@ -79,7 +80,7 @@ public class RouteService {
         return departureList.get(random.nextInt(departureList.size()));
     }
 
-    private AirportModel getArrivalAirport(AirplaneModel airplane, AirportModel departure) {
+    public AirportModel getArrivalAirport(AirplaneModel airplane, AirportModel departure) {
         List<AirportModel> arrivalList = airportRepository.findAll().stream()
                 .filter(airport -> !airport.getCode().equals(departure.getCode()))
                 .filter(airport -> calculateDistanceNm(departure, airport) < airplane.getRange() * 0.8)

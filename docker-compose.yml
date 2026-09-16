@@ -23,12 +23,12 @@ services:
       - "5432:5432"
     volumes:
       - ./db:/docker-entrypoint-initdb.d
-      - pgdata:/var/lib/postgresql/data
+      # - pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
   
-volumes:
-  pgdata:
+# volumes:
+#   pgdata:
