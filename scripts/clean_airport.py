@@ -21,6 +21,8 @@ def cleanData(input_file):
         delimiter=",",
         encoding="utf8",
         dtype=dtypes,
+        keep_default_na=False,
+        na_values=[""],
         usecols=[
             "type",
             "name",
